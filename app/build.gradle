@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.udacity.gradle.builditbigger"
-        minSdkVersion 10
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -24,4 +24,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     // Added for AdMob
     compile 'com.google.android.gms:play-services:8.4.0'
+    compile project(":AndroidJokeTellingLibrary")
+    compile project(":JavaJokeTellingLibrary")
 }
