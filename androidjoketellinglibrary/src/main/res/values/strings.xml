@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AndroidJokeTellingLibrary</string>
+    <string name="jokeToolText">This is a very funny joke!!!!</string>
+</resources>
