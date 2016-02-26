@@ -2,6 +2,7 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -17,6 +18,8 @@ import java.io.IOException;
 public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
     private static MyApi myApiService = null;
     private final JokeListener mListener;
+
+    private final static String TAG = EndpointsAsyncTask.class.getName();
 
     public EndpointsAsyncTask(JokeListener listener) {
         mListener = listener;
@@ -45,7 +48,8 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
         try {
             return myApiService.getAJoke().execute().getTheJoke();
         } catch (IOException e) {
-            return e.getMessage();
+            Log.e(TAG, e.getLocalizedMessage());
+            return null;
         }
     }
 
