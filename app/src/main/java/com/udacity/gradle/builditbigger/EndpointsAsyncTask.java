@@ -1,7 +1,9 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -20,9 +22,24 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
     private final JokeListener mListener;
 
     private final static String TAG = EndpointsAsyncTask.class.getName();
+    private ProgressDialog progressDialog;
 
     public EndpointsAsyncTask(JokeListener listener) {
         mListener = listener;
+    }
+
+    /**
+     * Runs on the UI thread before {@link #doInBackground}.
+     *
+     * @see #onPostExecute
+     * @see #doInBackground
+     */
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if (mListener instanceof Fragment) {
+            progressDialog = ProgressDialog.show(((Fragment) mListener).getContext(), "Loading...", "wait for it..!!");
+        }
     }
 
     @Override
@@ -56,5 +73,8 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         mListener.onJokeReceived(result);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 }
