@@ -14,7 +14,9 @@ import com.udacity.gradle.builditbigger.androidLibrary.JokeActivity;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements JokeListener{
+public class MainActivityFragment extends Fragment implements JokeListener {
+
+    private EndpointsAsyncTask task;
 
     public MainActivityFragment() {
     }
@@ -27,7 +29,8 @@ public class MainActivityFragment extends Fragment implements JokeListener{
         jokeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new EndpointsAsyncTask(MainActivityFragment.this).execute();
+                task = new EndpointsAsyncTask(MainActivityFragment.this);
+                task.execute();
             }
         });
         return root;
@@ -38,5 +41,17 @@ public class MainActivityFragment extends Fragment implements JokeListener{
         Intent intent = new Intent(getActivity(), JokeActivity.class);
         intent.putExtra("joke", joke);
         startActivity(intent);
+    }
+
+    /**
+     * Called when the fragment is no longer in use.  This is called
+     * after {@link #onStop()} and before {@link #onDetach()}.
+     */
+    @Override
+    public void onDestroy() {
+        if (task != null) {
+            task.cancel(true);
+        }
+        super.onDestroy();
     }
 }

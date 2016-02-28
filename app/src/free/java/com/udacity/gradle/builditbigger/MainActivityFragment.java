@@ -1,6 +1,8 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ public class MainActivityFragment extends Fragment implements JokeListener {
 
     private InterstitialAd mInterstitialAd;
     private String joke;
+    private AsyncTask<Context, Void, String> task;
 
     public MainActivityFragment() {
     }
@@ -55,7 +58,7 @@ public class MainActivityFragment extends Fragment implements JokeListener {
         jokeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new EndpointsAsyncTask(MainActivityFragment.this).execute();
+                task = new EndpointsAsyncTask(MainActivityFragment.this).execute();
             }
         });
         return root;
@@ -81,5 +84,17 @@ public class MainActivityFragment extends Fragment implements JokeListener {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         }
+    }
+
+    /**
+     * Called when the fragment is no longer in use.  This is called
+     * after {@link #onStop()} and before {@link #onDetach()}.
+     */
+    @Override
+    public void onDestroy() {
+        if (task != null) {
+            task.cancel(true);
+        }
+        super.onDestroy();
     }
 }
