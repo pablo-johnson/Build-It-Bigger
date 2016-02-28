@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0-beta5'
+        classpath 'com.android.tools.build:gradle:1.2.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -15,5 +15,17 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+    }
+}
+
+task tasktasktask {
+    tasks.getByPath(":JokeBackend:appengineRun")
+    println "appengineRun Finished"
+    tasks.getByPath(":app:test")
+    println "test Finished"
+    tasks.getByPath(":JokeBackend:appengineStop")
+    println "appengineStop Finished"
+    doLast {
+        println "Task Finished"
     }
 }
